@@ -1,0 +1,28 @@
+
+"""A planet in the Star Wars universe."""
+type Planet {
+    """ID of the planet"""
+    id: Int!
+    """The name of this planet."""
+    name: String!
+    """The number of standard hours it takes for this planet to complete a single rotation on its axis."""
+    rotationPeriod: String!
+    """The number of standard days it takes for this planet to complete a single orbit of its local star."""
+    orbitalPeriod: String!
+    """The diameter of this planet in kilometers."""
+    diameter: String!
+    """The climate of this planet. Comma separated if diverse."""
+    climate: String!
+    """A number denoting the gravity of this planet, where "1" is normal or 1 standard G. "2" is twice or 2 standard Gs. "0.5" is half or 0.5 standard Gs."""
+    gravity: String!
+    """The terrain of this planet. Comma separated if diverse."""
+    terrain: String!
+    """The percentage of the planet surface that is naturally occurring water or bodies of water."""
+    surfaceWater: String!
+    """The average population of sentient beings inhabiting this planet."""
+    population: String!
+    """An array of People URL Resources that live on this planet."""
+    residents: [Person]
+    """An array of films the planet has appeared in."""
+    films: [Film]
+}

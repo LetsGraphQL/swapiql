@@ -1,0 +1,34 @@
+"""A vehicle in Star Wars"""
+type Vehicle {
+	"""The ID for the vehicle."""
+	id: Int!
+	"""The name of this vehicle. The common name, such as "Sand Crawler" or "Speeder bike"."""
+	name: String!
+	"""The model or official name of this vehicle. Such as "All-Terrain Attack Transport"."""
+	model: String!
+	"""The class of this vehicle, such as "Wheeled" or "Repulsorcraft"."""
+	vehicleClass: String!
+	"""The manufacturer of this vehicle. Comma separated if more than one."""
+	manufacturer: String!
+	"""The length of this vehicle in meters."""
+	length: String!
+	"""The cost of this vehicle new, in Galactic Credits."""
+	costInCredits: String!
+	"""The number of personnel needed to run or pilot this vehicle."""
+	crew: String!
+	"""The number of non-essential people this vehicle can transport."""
+	passengers: String!
+	"""The maximum speed of this vehicle in the atmosphere."""
+	maxAtmospheringSpeed: String!
+	"""The maximum number of kilograms that this vehicle can transport."""
+	cargoCapacity: String!
+	"""The maximum length of time that this vehicle can provide consumables for its entire crew without having to resupply."""
+	consumables: String!
+	"""The hypermedia URL of this resource."""
+	url: String!
+	"""The ISO 8601 date format of the time that this resource was created."""
+	created: String!
+	"""The ISO 8601 date format of the time that this resource was edited."""
+	edited: String!
+	films: [Film]
+}

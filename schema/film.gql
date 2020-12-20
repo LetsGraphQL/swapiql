@@ -1,0 +1,23 @@
+"""A Star Wars film."""
+type Film {
+    """ID of the film"""
+    id: Int!
+    """The title of this film."""
+    title: String!
+    """The episode number of this film."""
+    episode: Int!
+    """The opening paragraphs at the beginning of this film."""
+    openingCrawl: String!
+    """The name of the director of this film."""
+    director: String!
+    """The name(s) of the producer(s) of this film. Comma separated."""
+    producer: String!
+    """The ISO 8601 date format of film release at original creator country."""
+    releaseDate: String!
+    """The ISO 8601 date format of the time that this resource was created."""
+    created: String!
+    """The characters in the film."""
+    characters: [Person]
+    """The planets in the film."""
+    planets: [Planet]
+}
