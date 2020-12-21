@@ -20,4 +20,6 @@ type Film {
     characters: [Person]
     """The planets in the film."""
     planets: [Planet]
+    """The species that are in the film."""
+    species: [Species]
 }
