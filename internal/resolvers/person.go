@@ -24,6 +24,7 @@ type PersonResolver struct {
 	StarshipURLs []string `json:"starships"`
 	VehicleURLs  []string `json:"vehicles"`
 	HomeworldURL string   `json:"homeworld"`
+	SpeciesURLs  []string `json:"species"`
 
 	Client *http.Client `json:"-"`
 }
@@ -51,6 +52,11 @@ func (p *PersonResolver) Starships() (*[]*StarshipResolver, error) {
 // Vehicles resolves the vehicles for a person
 func (p *PersonResolver) Vehicles() (*[]*VehicleResolver, error) {
 	return GetVehicle(p.Client, p.VehicleURLs)
+}
+
+// Species resolves the species for a person
+func (p *PersonResolver) Species() (*[]*SpeciesResolver, error) {
+	return GetSpecies(p.Client, p.SpeciesURLs)
 }
 
 // GetPerson requests a person from the REST API

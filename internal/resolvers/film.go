@@ -20,6 +20,7 @@ type FilmResolver struct {
 	URL           string   `json:"url"`
 	CharacterURLs []string `json:"characters"`
 	PlanetURLs    []string `json:"planets"`
+	SpeciesURLs   []string `json:"species"`
 
 	Client *http.Client `json:"-"`
 }
@@ -37,6 +38,11 @@ func (f *FilmResolver) Characters() (*[]*PersonResolver, error) {
 // Planets resolves the planets in the film
 func (f *FilmResolver) Planets() (*[]*PlanetResolver, error) {
 	return GetPlanet(f.Client, f.PlanetURLs)
+}
+
+// Species resolves the species for a person
+func (f *FilmResolver) Species() (*[]*SpeciesResolver, error) {
+	return GetSpecies(f.Client, f.SpeciesURLs)
 }
 
 // GetFilm requests a film from the REST API
