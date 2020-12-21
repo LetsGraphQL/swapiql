@@ -62,3 +62,12 @@ func (r *RootResolver) Vehicle(ctx context.Context, args struct{ ID int32 }) (*[
 	return GetVehicle(r.Client, url)
 
 }
+
+// Species resolves the species query
+func (r *RootResolver) Species(ctx context.Context, args struct{ ID int32 }) (*[]*SpeciesResolver, error) {
+
+	log.Println("Resolving Species with ID:", args.ID)
+	url := []string{fmt.Sprintf("%v/species/%v/", r.BaseURL, args.ID)}
+	return GetSpecies(r.Client, url)
+
+}

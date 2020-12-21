@@ -48,6 +48,7 @@ func main() {
 	//examples.ExamplePlanetQuery(schema)
 	//examples.ExampleStarshipQuery(schema)
 	//examples.ExampleVehicleQuery(schema)
+	//examples.ExampleSpeciesQuery(schema)
 
 	Server(schema)
 

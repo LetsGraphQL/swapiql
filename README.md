@@ -4,11 +4,11 @@ A GraphQL wrapper for the [SWAPI REST API](https://swapi.dev/).
 
 ## Introduction
 
-This repo is a proxy GraphQL wrapper service for the SWAPI REST API enabling the community to access their Star War trivia in GraphQL format. It is written in Go and has an associated Docker image for people to pull and run on their own platforms.
+This repo is a proxy GraphQL wrapper service for the SWAPI REST API enabling the community to access their Star War trivia in GraphQL format. It is written in Go and has an associated [Docker image](https://hub.docker.com/r/jgopsill/swapiql) for people to pull and run on their own platforms.
 
 Now there is no need to access multiple endpoints and synthesise your Star Wars data. SWAPIQL has you covered. Just ask it what data you want and off it will go to get it for you.
 
-The container exposes port `3000` and the GraphQL endpoint is at the root (e.g. `localhost:3000/`). The server also provides GraphQL Playground and Voyager at `/playground` and `/voyager`, respectively. These are pre-configured to work with the container's GraphQL endpoint.
+The container exposes port `3000` and the GraphQL endpoint is at the root (i.e. `localhost:3000/`). The server also provides GraphQL Playground and Voyager at `localhost:3000/playground` and `localhost:3000/voyager`, respectively. These are pre-configured to work with the container's GraphQL endpoint.
 
 If you want to use a different endpoint other than the root endpoint then you can create a environment variable called `GQL_PREFIX` and add the prefix that appends to the root. E.g. `localhost:3000/swapiql` will use `GQL_PREFIX=/swapiql`.
 
@@ -21,6 +21,10 @@ If you want to use a different endpoint other than the root endpoint then you ca
 - Testing
 
 ## Useful Commands
+
+```
+docker run -p 3000:3000 jgopsill/swapiql
+```
 
 ```
 go run main.go

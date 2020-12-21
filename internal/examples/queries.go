@@ -55,6 +55,14 @@ func ExampleVehicleQuery(schema *graphql.Schema) {
 
 }
 
+// ExampleSpeciesQuery ...
+func ExampleSpeciesQuery(schema *graphql.Schema) {
+
+	queryString := "{ species(id: 4) { name, people { name } } }"
+	ExecQuery(queryString, schema)
+
+}
+
 // ExecQuery execute a query
 func ExecQuery(query string, schema *graphql.Schema) {
 

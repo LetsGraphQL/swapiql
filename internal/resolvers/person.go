@@ -23,7 +23,7 @@ type PersonResolver struct {
 	FilmURLs     []string `json:"films"`
 	StarshipURLs []string `json:"starships"`
 	VehicleURLs  []string `json:"vehicles"`
-	HomeWorldURL string   `json:"homeworld"`
+	HomeworldURL string   `json:"homeworld"`
 
 	Client *http.Client `json:"-"`
 }
@@ -38,9 +38,9 @@ func (p *PersonResolver) Films() (*[]*FilmResolver, error) {
 	return GetFilm(p.Client, p.FilmURLs)
 }
 
-// HomeWorld resolves the planet for a person
-func (p *PersonResolver) HomeWorld() (*[]*PlanetResolver, error) {
-	return GetPlanet(p.Client, []string{p.HomeWorldURL})
+// Homeworld resolves the planet for a person
+func (p *PersonResolver) Homeworld() (*[]*PlanetResolver, error) {
+	return GetPlanet(p.Client, []string{p.HomeworldURL})
 }
 
 // Starships resolves the starships for a person

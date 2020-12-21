@@ -12,4 +12,6 @@ type Query {
     starship(id: Int!): [Starship]
     """Query the vehicles in Star Wars"""
     vehicle(id: Int!): [Vehicle]
+    """Query the species in Star Wars"""
+    species(id: Int!): [Species]
 }
