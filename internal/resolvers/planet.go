@@ -16,7 +16,7 @@ type PlanetResolver struct {
 	Diameter       string   `json:"diameter"`
 	Climate        string   `json:"climate"`
 	Gravity        string   `json:"gravity"`
-	Terrain        string   `json:"terrain"`
+	TerrainCSV     string   `json:"terrain"`
 	SurfaceWater   string   `json:"surface_water"`
 	Population     string   `json:"population"`
 	URL            string   `json:"url"`
@@ -39,6 +39,11 @@ func (p *PlanetResolver) Residents() (*[]*PersonResolver, error) {
 // Films resolves the films for a planet
 func (p *PlanetResolver) Films() (*[]*FilmResolver, error) {
 	return GetFilm(p.Client, p.FilmURLs)
+}
+
+// Terrain resolves the planets terrain
+func (p *PlanetResolver) Terrain() *[]string {
+	return SplitAndTrim(p.TerrainCSV)
 }
 
 // GetPlanet requests a person from the REST API

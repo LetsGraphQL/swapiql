@@ -16,9 +16,9 @@ type SpeciesResolver struct {
 	Designation     string   `json:"designation"`
 	AverageHeight   string   `json:"average_height"`
 	AverageLifespan string   `json:"average_lifespan"`
-	EyeColors       string   `json:"eye_colors"`
-	HairColors      string   `json:"hair_colors"`
-	SkinColors      string   `json:"skin_colors"`
+	EyeColorsCSV    string   `json:"eye_colors"`
+	HairColorsCSV   string   `json:"hair_colors"`
+	SkinColorsCSV   string   `json:"skin_colors"`
 	Language        string   `json:"language"`
 	HomeworldURL    string   `json:"homeworld"`
 	PeopleURLs      []string `json:"people"`
@@ -47,6 +47,21 @@ func (s *SpeciesResolver) People() (*[]*PersonResolver, error) {
 // Films ...
 func (s *SpeciesResolver) Films() (*[]*FilmResolver, error) {
 	return GetFilm(s.Client, s.FilmURLs)
+}
+
+// EyeColors resolves the common eye colors for a species
+func (s *SpeciesResolver) EyeColors() *[]string {
+	return SplitAndTrim(s.EyeColorsCSV)
+}
+
+// SkinColors resolves the common skin colors for a species
+func (s *SpeciesResolver) SkinColors() *[]string {
+	return SplitAndTrim(s.SkinColorsCSV)
+}
+
+// HairColors resolves the common hair colors for a species
+func (s *SpeciesResolver) HairColors() *[]string {
+	return SplitAndTrim(s.HairColorsCSV)
 }
 
 // GetSpecies requests a species from the REST API

@@ -18,3 +18,12 @@ func GetIDFromURL(url string) int32 {
 	}
 	return int32(0)
 }
+
+// SplitAndTrim splits a csv delimited string and trims the whitespace
+func SplitAndTrim(s string) *[]string {
+	slc := strings.Split(s, ",")
+	for i := range slc {
+		slc[i] = strings.TrimSpace(slc[i])
+	}
+	return &slc
+}

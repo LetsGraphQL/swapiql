@@ -24,10 +24,10 @@ type Person {
     homeworld: [Planet]
     """The films that the person """
     films: [Film]
-    """An array of starship resource URLs that this person has piloted."""
+    """The starships that this person has piloted."""
     starships: [Starship]
-    """An array of vehicle resource URLs that this person has piloted."""
+    """The vehicles that this person has piloted."""
     vehicles: [Vehicle]
-    """An array of species resource URLs that this person belongs to."""
+    """The species that this person belongs to."""
 	species: [Species]
 }

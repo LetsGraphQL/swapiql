@@ -1,12 +1,13 @@
 """A starship in Star Wars"""
 type Starship {
+	"""The ID of the starship."""
 	id: Int!
 	"""The name of this starship. The common name, such as "Death Star"."""
 	name: String!
 	"""The class of this starship, such as "Starfighter" or "Deep Space Mobile Battlestation"."""
 	starshipClass: String!
-	"""The manufacturer of this starship. Comma separated if more than one."""
-	manufacturer: String!
+	"""An array of manufacturers of this starship,"""
+	manufacturers: [String!]
 	"""The cost of this starship new, in galactic credits."""
 	costInCredits: String!
 	"""The length of this starship in meters."""

@@ -13,7 +13,7 @@ type StarshipResolver struct {
 	Name                 string   `json:"name"`
 	Model                string   `json:"model"`
 	StarshipClass        string   `json:"starship_class"`
-	Manufacturer         string   `json:"manufacturer"`
+	ManufacturersCSV     string   `json:"manufacturer"`
 	CostInCredits        string   `json:"cost_in_credits"`
 	Length               string   `json:"length"`
 	Crew                 string   `json:"crew"`
@@ -45,6 +45,11 @@ func (s *StarshipResolver) Films() (*[]*FilmResolver, error) {
 // Pilots resolves the pilots who flew the starship
 func (s *StarshipResolver) Pilots() (*[]*PersonResolver, error) {
 	return GetPerson(s.Client, s.PilotURLs)
+}
+
+// Manufacturers resolves the producers in the film
+func (s *StarshipResolver) Manufacturers() *[]string {
+	return SplitAndTrim(s.ManufacturersCSV)
 }
 
 // GetStarship requests a starship from the REST API

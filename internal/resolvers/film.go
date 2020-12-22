@@ -14,7 +14,7 @@ type FilmResolver struct {
 	Episode       int32    `json:"episode_id"`
 	OpeningCrawl  string   `json:"opening_crawl"`
 	Director      string   `json:"director"`
-	Producer      string   `json:"producer"`
+	ProducerCSV   string   `json:"producer"`
 	ReleaseDate   string   `json:"release_date"`
 	Created       string   `json:"created"`
 	URL           string   `json:"url"`
@@ -43,6 +43,11 @@ func (f *FilmResolver) Planets() (*[]*PlanetResolver, error) {
 // Species resolves the species for a person
 func (f *FilmResolver) Species() (*[]*SpeciesResolver, error) {
 	return GetSpecies(f.Client, f.SpeciesURLs)
+}
+
+// Producers resolves the producers in the film
+func (f *FilmResolver) Producers() *[]string {
+	return SplitAndTrim(f.ProducerCSV)
 }
 
 // GetFilm requests a film from the REST API

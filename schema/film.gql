@@ -11,7 +11,7 @@ type Film {
     """The name of the director of this film."""
     director: String!
     """The name(s) of the producer(s) of this film. Comma separated."""
-    producer: String!
+    producers: [String!]
     """The ISO 8601 date format of film release at original creator country."""
     releaseDate: String!
     """The ISO 8601 date format of the time that this resource was created."""
