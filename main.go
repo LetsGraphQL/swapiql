@@ -2,36 +2,43 @@ package main
 
 import (
 	"io/ioutil"
-	"log"
 	"net/http"
 	"os"
-	"time"
 
 	"github.com/JamesGopsill/swapiql/internal/resolvers"
 	graphql "github.com/graph-gophers/graphql-go"
 	"github.com/graph-gophers/graphql-go/relay"
+	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
 )
 
 func main() {
+
+	// Setting the logging level
+	zerolog.SetGlobalLevel(zerolog.InfoLevel)
+	debug := os.Getenv("GQL_DEBUG")
+	if debug == "true" {
+		zerolog.SetGlobalLevel(zerolog.DebugLevel)
+	}
+
 	// Booting up
-	log.Println("Booting up swapiql")
+	log.Info().Msg("SwapiQL booting up")
 
 	// Read in the schema
 	var s string
 	files, err := ioutil.ReadDir("./schema")
 	if err != nil {
-		log.Fatalf("Schema Dir Error: %v", err)
+		log.Fatal().Err(err).Msg("Schema Dir Error")
 	}
 	for _, file := range files {
 		content, err := ioutil.ReadFile("./schema/" + file.Name())
 		if err != nil {
-			log.Fatalf("Schema File Error: %v", err)
+			log.Fatal().Err(err).Msg("Schema File Error")
 		}
 		s += string(content)
 	}
 
-	// Create the http client
-	client := http.Client{Timeout: time.Second * 30}
+	// Add the options to the GraphQL schema
 	opts := []graphql.SchemaOpt{
 		graphql.UseFieldResolvers(),
 		graphql.UseStringDescriptions(),
@@ -39,7 +46,6 @@ func main() {
 
 	schema := graphql.MustParseSchema(s, &resolvers.RootResolver{
 		BaseURL: "https://swapi.dev/api",
-		Client:  &client,
 	}, opts...)
 
 	//examples.ExampleHello(schema)
@@ -68,10 +74,10 @@ func Server(schema *graphql.Schema) {
 		http.ServeFile(w, r, "./static/voyager.html")
 	})
 
-	log.Println("Listening on :3000 ...")
+	log.Info().Msg("Listening on :3000 ...")
 	err := http.ListenAndServe(":3000", nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal().Err(err)
 	}
 
 }

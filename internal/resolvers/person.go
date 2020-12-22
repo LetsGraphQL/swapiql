@@ -1,11 +1,7 @@
 package resolvers
 
 import (
-	"encoding/json"
-	"errors"
-	"log"
-	"net/http"
-	"strings"
+	"github.com/rs/zerolog/log"
 )
 
 // PersonResolver resolves a person from SWAPI
@@ -25,8 +21,6 @@ type PersonResolver struct {
 	VehicleURLs  []string `json:"vehicles"`
 	HomeworldURL string   `json:"homeworld"`
 	SpeciesURLs  []string `json:"species"`
-
-	Client *http.Client `json:"-"`
 }
 
 // ID creates the ID field equivalent to the number in parsed to SWAPI
@@ -36,76 +30,48 @@ func (p *PersonResolver) ID() int32 {
 
 // Films resolves the films for a person
 func (p *PersonResolver) Films() (*[]*FilmResolver, error) {
-	return GetFilm(p.Client, p.FilmURLs)
+	return GetFilm(p.FilmURLs)
 }
 
 // Homeworld resolves the planet for a person
 func (p *PersonResolver) Homeworld() (*[]*PlanetResolver, error) {
-	return GetPlanet(p.Client, []string{p.HomeworldURL})
+	return GetPlanet([]string{p.HomeworldURL})
 }
 
 // Starships resolves the starships for a person
 func (p *PersonResolver) Starships() (*[]*StarshipResolver, error) {
-	return GetStarship(p.Client, p.StarshipURLs)
+	return GetStarship(p.StarshipURLs)
 }
 
 // Vehicles resolves the vehicles for a person
 func (p *PersonResolver) Vehicles() (*[]*VehicleResolver, error) {
-	return GetVehicle(p.Client, p.VehicleURLs)
+	return GetVehicle(p.VehicleURLs)
 }
 
 // Species resolves the species for a person
 func (p *PersonResolver) Species() (*[]*SpeciesResolver, error) {
-	return GetSpecies(p.Client, p.SpeciesURLs)
+	return GetSpecies(p.SpeciesURLs)
 }
 
 // GetPerson requests a person from the REST API
-func GetPerson(c *http.Client, urls []string) (*[]*PersonResolver, error) {
+func GetPerson(urls []string) (*[]*PersonResolver, error) {
 
 	var resolvers []*PersonResolver
 	var err error
 
-	if c == nil {
-		err = errors.New("No client detected in resolver")
-		return nil, err
-	}
-
 	for _, url := range urls {
 		var resolver PersonResolver
-		resolver.Client = c
 
-		// Make sure it is using a secure connection
-		if !strings.Contains(url, "https") {
-			url = strings.ReplaceAll(url, "http", "https")
-		}
+		log.Debug().Str("URL", url).Msg("GetPerson")
 
-		log.Printf("GetPerson: %v", url)
-
-		req, err := http.NewRequest("GET", url, nil)
-		if err != nil {
-			return nil, err
-		}
-
-		res, err := c.Do(req)
-		if err != nil {
-			return nil, err
-		}
-
-		defer res.Body.Close()
-
-		if res.StatusCode != 200 {
-			err = errors.New(res.Status)
-			return nil, err
-		}
-
-		err = json.NewDecoder(res.Body).Decode(&resolver)
+		err := GetURL(url, &resolver)
 		if err != nil {
 			return nil, err
 		}
 
 		resolvers = append(resolvers, &resolver)
-
 	}
 
 	return &resolvers, err
+
 }
