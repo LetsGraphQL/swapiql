@@ -66,7 +66,7 @@ func Server(schema *graphql.Schema) {
 	// Get the prefix from the Envvar if there is one
 	prefix := os.Getenv("GQL_PREFIX")
 
-	http.Handle(prefix+"/", &relay.Handler{Schema: schema})
+	http.Handle(prefix+"/graphql", &relay.Handler{Schema: schema})
 	http.HandleFunc(prefix+"/playground", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "./static/playground.html")
 	})

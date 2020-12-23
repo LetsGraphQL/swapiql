@@ -8,9 +8,9 @@ This repo is a proxy GraphQL wrapper service for the SWAPI REST API enabling the
 
 Now there is no need to access multiple endpoints and synthesise your Star Wars data. SWAPIQL has you covered. Just ask it what data you want and off it will go to get it for you.
 
-The container exposes port `3000` and the GraphQL endpoint is at the root (i.e. `localhost:3000/`). The server also provides GraphQL Playground and Voyager at `localhost:3000/playground` and `localhost:3000/voyager`, respectively. These are pre-configured to work with the container's GraphQL endpoint.
+The container exposes port `3000` and the GraphQL endpoint is at the root (i.e. `localhost:3000/graphql`). The server also provides GraphQL Playground and Voyager at `localhost:3000/playground` and `localhost:3000/voyager`, respectively. These are pre-configured to work with the container's GraphQL endpoint.
 
-If you want to use a different endpoint other than the root endpoint then you can create a environment variable called `GQL_PREFIX` and add the prefix that appends to the root. E.g. `localhost:3000/swapiql` will use `GQL_PREFIX=/swapiql`.
+If you want to use a different endpoint other than the root endpoint then you can create a environment variable called `GQL_PREFIX` and add the prefix that appends to the root. E.g. `localhost:3000/swapiql/[graphql|playground|voyager]` will use `GQL_PREFIX=/swapiql`.
 
 ## TODO
 
