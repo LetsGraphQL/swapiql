@@ -1,17 +1,17 @@
 """Queries available in the schema."""
 type Query {
-    """hello is a little query to test if the server is alive. It should return World."""
-    hello: String!
-    """Query the people in Star Wars"""
+    """Queries information about the service."""
+    info(): Info
+    """Query the people in Star Wars."""
     person(id: Int!): [Person]
-    """Query the films in Star Wars"""
+    """Query the films in Star Wars."""
     film(id: Int!): [Film]
-    """Query the planets in Star Wars"""
+    """Query the planets in Star Wars."""
     planet(id: Int!): [Planet]
-    """Query the starships in Star Wars"""
+    """Query the starships in Star Wars."""
     starship(id: Int!): [Starship]
-    """Query the vehicles in Star Wars"""
+    """Query the vehicles in Star Wars."""
     vehicle(id: Int!): [Vehicle]
-    """Query the species in Star Wars"""
+    """Query the species in Star Wars."""
     species(id: Int!): [Species]
 }

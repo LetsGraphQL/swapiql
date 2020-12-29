@@ -5,7 +5,9 @@ import (
 	"net/http"
 	"os"
 
+	//"github.com/JamesGopsill/swapiql/internal/examples"
 	"github.com/JamesGopsill/swapiql/internal/resolvers"
+
 	graphql "github.com/graph-gophers/graphql-go"
 	"github.com/graph-gophers/graphql-go/relay"
 	"github.com/rs/zerolog"
@@ -55,6 +57,7 @@ func main() {
 	//examples.ExampleStarshipQuery(schema)
 	//examples.ExampleVehicleQuery(schema)
 	//examples.ExampleSpeciesQuery(schema)
+	//examples.ExampleInfoQuery(schema)
 
 	Server(schema)
 

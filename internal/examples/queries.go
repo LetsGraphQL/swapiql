@@ -7,15 +7,7 @@ import (
 	"github.com/graph-gophers/graphql-go"
 )
 
-// ExampleHello ...
-func ExampleHello(schema *graphql.Schema) {
-
-	queryString := "{ hello }"
-	ExecQuery(queryString, schema)
-
-}
-
-// ExamplePersonQuery ...
+// ExamplePersonQuery performs a person query
 func ExamplePersonQuery(schema *graphql.Schema) {
 
 	queryString := "{ person(id: 1) { id, name, height, hairColor, skinColor, films { title }, homeworld { name } } }"
@@ -23,7 +15,7 @@ func ExamplePersonQuery(schema *graphql.Schema) {
 
 }
 
-// ExampleFilmQuery ...
+// ExampleFilmQuery performs a film query
 func ExampleFilmQuery(schema *graphql.Schema) {
 
 	queryString := "{ film(id: 1) { id, title, episode, characters { name }, planets { name } } }"
@@ -31,7 +23,7 @@ func ExampleFilmQuery(schema *graphql.Schema) {
 
 }
 
-// ExamplePlanetQuery ...
+// ExamplePlanetQuery performs a planet query
 func ExamplePlanetQuery(schema *graphql.Schema) {
 
 	queryString := "{ planet(id: 1) { name, diameter, residents { name }, films { title } } }"
@@ -39,7 +31,7 @@ func ExamplePlanetQuery(schema *graphql.Schema) {
 
 }
 
-// ExampleStarshipQuery ...
+// ExampleStarshipQuery performs a starship query
 func ExampleStarshipQuery(schema *graphql.Schema) {
 
 	queryString := "{ starship(id: 4) { name, films { title }, pilots { name } } }"
@@ -47,7 +39,7 @@ func ExampleStarshipQuery(schema *graphql.Schema) {
 
 }
 
-// ExampleVehicleQuery ...
+// ExampleVehicleQuery performs a vehicle query
 func ExampleVehicleQuery(schema *graphql.Schema) {
 
 	queryString := "{ vehicle(id: 4) { name } }"
@@ -55,7 +47,7 @@ func ExampleVehicleQuery(schema *graphql.Schema) {
 
 }
 
-// ExampleSpeciesQuery ...
+// ExampleSpeciesQuery performs a species query
 func ExampleSpeciesQuery(schema *graphql.Schema) {
 
 	queryString := "{ species(id: 4) { name, people { name } } }"
@@ -63,7 +55,15 @@ func ExampleSpeciesQuery(schema *graphql.Schema) {
 
 }
 
-// ExecQuery execute a query
+// ExampleInfoQuery performs a info query
+func ExampleInfoQuery(schema *graphql.Schema) {
+
+	queryString := "{ info() { title, uptime } }"
+	ExecQuery(queryString, schema)
+
+}
+
+// ExecQuery executes a query
 func ExecQuery(query string, schema *graphql.Schema) {
 
 	ctx := context.Background()

@@ -1,0 +1,17 @@
+"""Provides information about the service"""
+type Info {
+	"""The title of the service."""
+	title: String!
+	"""URL of service repository."""
+	repositoryUrl: String!
+	"""URl of the service docker image."""
+	dockerUrl: String!
+	"""Description of the service."""
+	description: String!
+	"""Time the service started."""
+	upfrom: String!
+	"""How long the service has been up."""
+	uptime: String!
+	"""The number of requests that have been served by the service."""
+	requestsServed: String!
+}

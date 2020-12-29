@@ -13,6 +13,12 @@ import (
 // Sets a global httpclient for the resolver package
 var httpclient = &http.Client{Timeout: time.Second * 30}
 
+// Server start time
+var upfrom = time.Now()
+
+// requestsServed increments after every request
+var requestsServed = int64(0)
+
 // GetIDFromURL gets the id from the URL of the resource
 func GetIDFromURL(url string) int32 {
 	els := strings.Split(url, "/")
