@@ -16,7 +16,7 @@
 			function introspectionProvider(introspectionQuery) {
 				// ... do a call to server using introspectionQuery provided
 				// or just return pre-fetched introspection
-				return fetch(window.location.href.replace("voyager", "grapqhl"), {
+				return fetch(window.location.href.replace("voyager", "graphql"), {
 						method: "post",
 						headers: { 
 								"Content-Type": "application/json"
