@@ -61,3 +61,46 @@ func GetVehicle(urls []string) (*[]*VehicleResolver, error) {
 	return &resolvers, err
 
 }
+
+// SearchVehicle searches for starships from the REST API
+func SearchVehicle(url string) (*[]*VehicleResolver, error) {
+
+	var err error
+	var r []*VehicleResolver
+	var result struct {
+		SearchResponse
+		Results []*VehicleResolver `json:"results"`
+	}
+
+	err = GetURL(url, &result)
+	if err != nil {
+		return nil, err
+	}
+
+	r = append(r, result.Results...)
+	nextPage := result.Next
+	log.Debug().Str("URL", nextPage).Msg("Next Page")
+
+	// Loop if there is a next page
+	for nextPage != "" {
+
+		// Reset the struct
+		var result struct {
+			SearchResponse
+			Results []*VehicleResolver `json:"results"`
+		}
+
+		err = GetURL(nextPage, &result)
+		if err != nil {
+			return nil, err
+		}
+
+		r = append(r, result.Results...)
+		nextPage = result.Next
+		log.Debug().Str("URL", nextPage).Msg("Next Page")
+
+	}
+
+	return &r, err
+
+}

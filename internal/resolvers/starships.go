@@ -68,3 +68,47 @@ func GetStarship(urls []string) (*[]*StarshipResolver, error) {
 	return &resolvers, err
 
 }
+
+
+// SearchStarship searches for starships from the REST API
+func SearchStarship(url string) (*[]*StarshipResolver, error) {
+
+	var err error
+	var r []*StarshipResolver
+	var result struct {
+		SearchResponse
+		Results []*StarshipResolver `json:"results"`
+	}
+
+	err = GetURL(url, &result)
+	if err != nil {
+		return nil, err
+	}
+
+	r = append(r, result.Results...)
+	nextPage := result.Next
+	log.Debug().Str("URL", nextPage).Msg("Next Page")
+
+	// Loop if there is a next page
+	for nextPage != "" {
+
+		// Reset the struct
+		var result struct {
+			SearchResponse
+			Results []*StarshipResolver `json:"results"`
+		}
+
+		err = GetURL(nextPage, &result)
+		if err != nil {
+			return nil, err
+		}
+
+		r = append(r, result.Results...)
+		nextPage = result.Next
+		log.Debug().Str("URL", nextPage).Msg("Next Page")
+
+	}
+
+	return &r, err
+
+}

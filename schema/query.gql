@@ -3,15 +3,33 @@ type Query {
     """Queries information about the service."""
     info(): Info
     """Query the people in Star Wars."""
-    person(id: Int!): [Person]
+    person(
+        id: Int
+        search: String
+    ): [Person]
     """Query the films in Star Wars."""
-    film(id: Int!): [Film]
+    film(
+        id: Int
+        search: String
+    ): [Film]
     """Query the planets in Star Wars."""
-    planet(id: Int!): [Planet]
+    planet(
+        id: Int
+        search: String
+    ): [Planet]
     """Query the starships in Star Wars."""
-    starship(id: Int!): [Starship]
+    starship(
+        id: Int
+        search: String
+    ): [Starship]
     """Query the vehicles in Star Wars."""
-    vehicle(id: Int!): [Vehicle]
+    vehicle(
+        id: Int
+        search: String
+    ): [Vehicle]
     """Query the species in Star Wars."""
-    species(id: Int!): [Species]
+    species(
+        id: Int
+        search: String
+    ): [Species]
 }

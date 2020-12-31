@@ -65,3 +65,46 @@ func GetFilm(urls []string) (*[]*FilmResolver, error) {
 
 	return &resolvers, err
 }
+
+// SearchFilm searches for films from the REST API
+func SearchFilm(url string) (*[]*FilmResolver, error) {
+
+	var err error
+	var r []*FilmResolver
+	var result struct {
+		SearchResponse
+		Results []*FilmResolver `json:"results"`
+	}
+
+	err = GetURL(url, &result)
+	if err != nil {
+		return nil, err
+	}
+
+	r = append(r, result.Results...)
+	nextPage := result.Next
+	log.Debug().Str("URL", nextPage).Msg("Next Page")
+
+	// Loop if there is a next page
+	for nextPage != "" {
+
+		// Reset the struct
+		var result struct {
+			SearchResponse
+			Results []*FilmResolver `json:"results"`
+		}
+
+		err = GetURL(nextPage, &result)
+		if err != nil {
+			return nil, err
+		}
+
+		r = append(r, result.Results...)
+		nextPage = result.Next
+		log.Debug().Str("URL", nextPage).Msg("Next Page")
+
+	}
+
+	return &r, err
+
+}

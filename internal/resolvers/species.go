@@ -80,3 +80,46 @@ func GetSpecies(urls []string) (*[]*SpeciesResolver, error) {
 	return &resolvers, err
 
 }
+
+// SearchSpecies searches for starships from the REST API
+func SearchSpecies(url string) (*[]*SpeciesResolver, error) {
+
+	var err error
+	var r []*SpeciesResolver
+	var result struct {
+		SearchResponse
+		Results []*SpeciesResolver `json:"results"`
+	}
+
+	err = GetURL(url, &result)
+	if err != nil {
+		return nil, err
+	}
+
+	r = append(r, result.Results...)
+	nextPage := result.Next
+	log.Debug().Str("URL", nextPage).Msg("Next Page")
+
+	// Loop if there is a next page
+	for nextPage != "" {
+
+		// Reset the struct
+		var result struct {
+			SearchResponse
+			Results []*SpeciesResolver `json:"results"`
+		}
+
+		err = GetURL(nextPage, &result)
+		if err != nil {
+			return nil, err
+		}
+
+		r = append(r, result.Results...)
+		nextPage = result.Next
+		log.Debug().Str("URL", nextPage).Msg("Next Page")
+
+	}
+
+	return &r, err
+
+}

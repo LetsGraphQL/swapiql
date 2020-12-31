@@ -62,3 +62,47 @@ func GetPlanet(urls []string) (*[]*PlanetResolver, error) {
 	return &resolvers, err
 
 }
+
+// SearchPlanet searches for planets from the REST API
+func SearchPlanet(url string) (*[]*PlanetResolver, error) {
+
+	var err error
+	var r []*PlanetResolver
+	var result struct {
+		SearchResponse
+		Results []*PlanetResolver `json:"results"`
+	}
+
+	err = GetURL(url, &result)
+	if err != nil {
+		return nil, err
+	}
+
+	r = append(r, result.Results...)
+	nextPage := result.Next
+	log.Debug().Str("URL", nextPage).Msg("Next Page")
+
+	// Loop if there is a next page
+	for nextPage != "" {
+
+		// Reset the struct
+		var result struct {
+			SearchResponse
+			Results []*PlanetResolver `json:"results"`
+		}
+
+		err = GetURL(nextPage, &result)
+		if err != nil {
+			return nil, err
+		}
+
+		r = append(r, result.Results...)
+		nextPage = result.Next
+		log.Debug().Str("URL", nextPage).Msg("Next Page")
+
+	}
+
+	return &r, err
+
+}
+

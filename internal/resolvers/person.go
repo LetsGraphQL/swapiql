@@ -60,9 +60,10 @@ func GetPerson(urls []string) (*[]*PersonResolver, error) {
 	var err error
 
 	for _, url := range urls {
-		var resolver PersonResolver
 
 		log.Debug().Str("URL", url).Msg("GetPerson")
+
+		var resolver PersonResolver
 
 		err := GetURL(url, &resolver)
 		if err != nil {
@@ -73,5 +74,48 @@ func GetPerson(urls []string) (*[]*PersonResolver, error) {
 	}
 
 	return &resolvers, err
+
+}
+
+// SearchPerson searches for people from the REST API
+func SearchPerson(url string) (*[]*PersonResolver, error) {
+
+	var err error
+	var r []*PersonResolver
+	var result struct {
+		SearchResponse
+		Results []*PersonResolver `json:"results"`
+	}
+
+	err = GetURL(url, &result)
+	if err != nil {
+		return nil, err
+	}
+
+	r = append(r, result.Results...)
+	nextPage := result.Next
+	log.Debug().Str("URL", nextPage).Msg("Next Page")
+
+	// Loop if there is a next page
+	for nextPage != "" {
+
+		// Reset the struct
+		var result struct {
+			SearchResponse
+			Results []*PersonResolver `json:"results"`
+		}
+
+		err = GetURL(nextPage, &result)
+		if err != nil {
+			return nil, err
+		}
+
+		r = append(r, result.Results...)
+		nextPage = result.Next
+		log.Debug().Str("URL", nextPage).Msg("Next Page")
+
+	}
+
+	return &r, err
 
 }

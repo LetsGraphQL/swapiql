@@ -10,6 +10,13 @@ import (
 	"time"
 )
 
+// SearchResponse features the top-level items in a search response. Should be used in conjunction with a resolver.
+type SearchResponse struct {
+	Count    int    `json:"count"`
+	Next     string `json:"next"`
+	Previous string `json:"previous"`
+}
+
 // Sets a global httpclient for the resolver package
 var httpclient = &http.Client{Timeout: time.Second * 30}
 
