@@ -1,5 +1,10 @@
 # SWAPIQL
 
+![Docker Cloud Automated build](https://img.shields.io/docker/cloud/automated/jgopsill/swapiql?style=flat-square)
+![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/jgopsill/swapiql?style=flat-square)
+![Docker Image Size (tag)](https://img.shields.io/docker/image-size/jgopsill/swapiql/latest?style=flat-square)
+![Docker Pulls](https://img.shields.io/docker/pulls/jgopsill/swapiql?style=flat-square)
+
 A GraphQL wrapper for the [SWAPI REST API](https://swapi.dev/).
 
 ## Introduction
@@ -14,21 +19,33 @@ If you want to use a different endpoint other than the root endpoint then you ca
 
 ## TODO
 
-- Finish the wrapper 
-- Document the schema
-- Add errors
-- Add search
-- Testing
+- ~~Finish wrapper first parse~~
+- ~~Document the schema~~
+- ~~Add search~~
+- Testing and errors
+- Dataloading
 
 ## Useful Commands
+
+1. Running the docker image
 
 ```
 docker run -p 3000:3000 jgopsill/swapiql
 ```
 
+2. Running the code
+
 ```
 go run main.go
 ```
+
+3. Running the code in debug mode
+
+```
+GQL_DEUBUG=true run main.go
+```
+
+4. Wrapping the code in a docker container
 
 ```
 DOCKER_BUILDKIT=1 docker build --tag swapiql .
