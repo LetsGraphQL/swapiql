@@ -1,11 +1,15 @@
 # SWAPIQL
 
+A GraphQL wrapper for the [SWAPI REST API](https://swapi.dev/).
+
+![GitHub](https://img.shields.io/github/license/JamesGopsill/swapiql?style=flat-square)
+![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/JamesGopsill/swapiql?style=flat-square)
+
 ![Docker Cloud Automated build](https://img.shields.io/docker/cloud/automated/jgopsill/swapiql?style=flat-square)
 ![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/jgopsill/swapiql?style=flat-square)
 ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/jgopsill/swapiql/latest?style=flat-square)
 ![Docker Pulls](https://img.shields.io/docker/pulls/jgopsill/swapiql?style=flat-square)
 
-A GraphQL wrapper for the [SWAPI REST API](https://swapi.dev/).
 
 ## Introduction
 
@@ -17,13 +21,15 @@ The container exposes port `3000` and the GraphQL endpoint is at the root (i.e. 
 
 If you want to use a different endpoint other than the root endpoint then you can create a environment variable called `GQL_PREFIX` and add the prefix that appends to the root. E.g. `localhost:3000/swapiql/[graphql|playground|voyager]` will use `GQL_PREFIX=/swapiql`.
 
+Zerolog is used for logging in the code and defaults to logging info information. This can be changed to log debug information using the `GQL_DEBUG=true` environment variable.
+
 ## TODO
 
 - ~~Finish wrapper first parse~~
 - ~~Document the schema~~
 - ~~Add search~~
 - Testing and errors
-- Dataloading
+- Dataloading?
 
 ## Useful Commands
 
@@ -62,4 +68,5 @@ DOCKER_BUILDKIT=1 docker build --tag swapiql .
 - [GraphQL](https://graphql.org/)
 - [Docker BuildKit](https://docs.docker.com/develop/develop-images/build_enhancements/)
 - [Watchtower](https://containrrr.dev/watchtower/)
+- [Zerolog](https://github.com/rs/zerolog)
 
