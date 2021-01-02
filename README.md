@@ -19,13 +19,22 @@ Now there is no need to access multiple endpoints and synthesise your Star Wars 
 
 The container exposes port `3000` and the GraphQL endpoint is at the root (i.e. `localhost:3000/graphql`). The server also provides GraphQL Playground and Voyager at `localhost:3000/playground` and `localhost:3000/voyager`, respectively. These are pre-configured to work with the container's GraphQL endpoint.
 
+![localhost:3000/playground](img/playground.png)
+![localhost:3000/voyager](img/voyager.png)
+
+### Serving at a different endpoint
+
 If you want to use a different endpoint other than the root endpoint then you can create a environment variable called `GQL_PREFIX` and add the prefix that appends to the root. E.g. `localhost:3000/swapiql/[graphql|playground|voyager]` will use `GQL_PREFIX=/swapiql`.
+
+### Logging
 
 Zerolog is used for logging in the code and defaults to logging info information. This can be changed to log debug information using the `GQL_DEBUG=true` environment variable.
 
+### Response cache
+
 Go-cache is used to provide url response caching to reduce the number of repeated calls to the REST API.
 
-## Useful Commands
+### Useful commands
 
 1. To run the the docker image
 
@@ -45,13 +54,13 @@ go run main.go
 GQL_DEUBUG=true go run main.go
 ```
 
-4. Building the code in a docker container
+4. Building the docker image
 
 ```
 DOCKER_BUILDKIT=1 docker build --tag swapiql .
 ```
 
-`DOCKER_BUILDKIT` env var removes the intermediate images after build.
+N.b. `DOCKER_BUILDKIT` env var removes the intermediate images after build.
 
 ### TODO
 
@@ -61,7 +70,7 @@ DOCKER_BUILDKIT=1 docker build --tag swapiql .
 - ~~Caching~~
 - Testing and errors
 
-## Useful Links
+## Useful links
 
 - [Google Distroless Containers](https://github.com/GoogleContainerTools/distroless)
 - [Creating small and secure golang images](https://medium.com/@chemidy/create-the-smallest-and-secured-golang-docker-image-based-on-scratch-4752223b7324)
@@ -72,4 +81,6 @@ DOCKER_BUILDKIT=1 docker build --tag swapiql .
 - [Watchtower](https://containrrr.dev/watchtower/)
 - [Zerolog](https://github.com/rs/zerolog)
 - [go-cache](https://github.com/patrickmn/go-cache)
+- [GraphQL Playground](https://github.com/graphql/graphql-playground)
+- [GraphQL Voyager](https://github.com/APIs-guru/graphql-voyager)
 
