@@ -1,6 +1,7 @@
 package resolvers
 
 import (
+	gocache "github.com/patrickmn/go-cache"
 	"github.com/rs/zerolog/log"
 )
 
@@ -44,23 +45,40 @@ func (f *FilmResolver) Producers() *[]string {
 	return SplitAndTrim(f.ProducerCSV)
 }
 
-// GetFilm requests a film from the REST API
+// GetFilm requests a film from the REST API or cache
 func GetFilm(urls []string) (*[]*FilmResolver, error) {
 
 	var resolvers []*FilmResolver
 	var err error
 
 	for _, url := range urls {
-		var resolver FilmResolver
 
-		log.Debug().Str("URL", url).Msg("GetFilm")
+		// Checking the cache
+		val, found := cache.Get(url)
 
-		err := GetURL(url, &resolver)
-		if err != nil {
-			return nil, err
+		if found {
+
+			log.Debug().Str("URL", url).Msg("GetFilm: Using cache")
+
+			resolver := val.(*FilmResolver)
+			resolvers = append(resolvers, resolver)
+
+		} else {
+
+			log.Debug().Str("URL", url).Msg("GetFilm: Using REST API")
+
+			var resolver FilmResolver
+
+			err := GetURL(url, &resolver)
+			if err != nil {
+				return nil, err
+			}
+
+			cache.Set(url, &resolver, gocache.DefaultExpiration)
+			resolvers = append(resolvers, &resolver)
+
 		}
 
-		resolvers = append(resolvers, &resolver)
 	}
 
 	return &resolvers, err

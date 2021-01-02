@@ -1,6 +1,7 @@
 package resolvers
 
 import (
+	gocache "github.com/patrickmn/go-cache"
 	"github.com/rs/zerolog/log"
 )
 
@@ -40,23 +41,40 @@ func (p *PlanetResolver) Terrain() *[]string {
 	return SplitAndTrim(p.TerrainCSV)
 }
 
-// GetPlanet requests a person from the REST API
+// GetPlanet requests a person from the REST API or cache
 func GetPlanet(urls []string) (*[]*PlanetResolver, error) {
 
 	var resolvers []*PlanetResolver
 	var err error
 
 	for _, url := range urls {
-		var resolver PlanetResolver
 
-		log.Debug().Str("URL", url).Msg("GetPlanet")
+		// Check the cache
+		val, found := cache.Get(url)
 
-		err := GetURL(url, &resolver)
-		if err != nil {
-			return nil, err
+		if found {
+
+			log.Debug().Str("URL", url).Msg("GetPlanet: Using cache")
+
+			resolver := val.(*PlanetResolver)
+			resolvers = append(resolvers, resolver)
+
+		} else {
+
+			log.Debug().Str("URL", url).Msg("GetPlanet: Using REST API")
+
+			var resolver PlanetResolver
+
+			err := GetURL(url, &resolver)
+			if err != nil {
+				return nil, err
+			}
+
+			cache.Set(url, &resolver, gocache.DefaultExpiration)
+			resolvers = append(resolvers, &resolver)
+
 		}
 
-		resolvers = append(resolvers, &resolver)
 	}
 
 	return &resolvers, err
@@ -105,4 +123,3 @@ func SearchPlanet(url string) (*[]*PlanetResolver, error) {
 	return &r, err
 
 }
-

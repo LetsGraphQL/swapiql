@@ -1,6 +1,7 @@
 package resolvers
 
 import (
+	gocache "github.com/patrickmn/go-cache"
 	"github.com/rs/zerolog/log"
 )
 
@@ -53,7 +54,7 @@ func (p *PersonResolver) Species() (*[]*SpeciesResolver, error) {
 	return GetSpecies(p.SpeciesURLs)
 }
 
-// GetPerson requests a person from the REST API
+// GetPerson requests a person from the REST API or cache
 func GetPerson(urls []string) (*[]*PersonResolver, error) {
 
 	var resolvers []*PersonResolver
@@ -61,16 +62,32 @@ func GetPerson(urls []string) (*[]*PersonResolver, error) {
 
 	for _, url := range urls {
 
-		log.Debug().Str("URL", url).Msg("GetPerson")
+		// Checking the cache
+		val, found := cache.Get(url)
 
-		var resolver PersonResolver
+		if found {
 
-		err := GetURL(url, &resolver)
-		if err != nil {
-			return nil, err
+			log.Debug().Str("URL", url).Msg("GetPerson: Using cache")
+
+			resolver := val.(*PersonResolver)
+			resolvers = append(resolvers, resolver)
+
+		} else {
+
+			log.Debug().Str("URL", url).Msg("GetPerson: Using REST API")
+
+			var resolver PersonResolver
+
+			err := GetURL(url, &resolver)
+			if err != nil {
+				return nil, err
+			}
+
+			cache.Set(url, &resolver, gocache.DefaultExpiration)
+			resolvers = append(resolvers, &resolver)
+
 		}
 
-		resolvers = append(resolvers, &resolver)
 	}
 
 	return &resolvers, err

@@ -1,6 +1,7 @@
 package resolvers
 
 import (
+	gocache "github.com/patrickmn/go-cache"
 	"github.com/rs/zerolog/log"
 )
 
@@ -46,29 +47,44 @@ func (s *StarshipResolver) Manufacturers() *[]string {
 	return SplitAndTrim(s.ManufacturersCSV)
 }
 
-// GetStarship requests a starship from the REST API
+// GetStarship requests a starship from the REST API or cache
 func GetStarship(urls []string) (*[]*StarshipResolver, error) {
 
 	var resolvers []*StarshipResolver
 	var err error
 
 	for _, url := range urls {
-		var resolver StarshipResolver
 
-		log.Debug().Str("URL", url).Msg("GetStarship")
+		// Check the cache
+		val, found := cache.Get(url)
 
-		err := GetURL(url, &resolver)
-		if err != nil {
-			return nil, err
+		if found {
+
+			log.Debug().Str("URL", url).Msg("GetStarship: Using cache")
+
+			resolver := val.(*StarshipResolver)
+			resolvers = append(resolvers, resolver)
+
+		} else {
+
+			log.Debug().Str("URL", url).Msg("GetStarship: Using REST API")
+
+			var resolver StarshipResolver
+
+			err := GetURL(url, &resolver)
+			if err != nil {
+				return nil, err
+			}
+
+			cache.Set(url, &resolver, gocache.DefaultExpiration)
+			resolvers = append(resolvers, &resolver)
+
 		}
-
-		resolvers = append(resolvers, &resolver)
 	}
 
 	return &resolvers, err
 
 }
-
 
 // SearchStarship searches for starships from the REST API
 func SearchStarship(url string) (*[]*StarshipResolver, error) {

@@ -23,23 +23,17 @@ If you want to use a different endpoint other than the root endpoint then you ca
 
 Zerolog is used for logging in the code and defaults to logging info information. This can be changed to log debug information using the `GQL_DEBUG=true` environment variable.
 
-## TODO
-
-- ~~Finish wrapper first parse~~
-- ~~Document the schema~~
-- ~~Add search~~
-- Testing and errors
-- Dataloading?
+Go-cache is used to provide url response caching to reduce the number of repeated calls to the REST API.
 
 ## Useful Commands
 
-1. Running the docker image
+1. To run the the docker image
 
 ```
 docker run -p 3000:3000 jgopsill/swapiql
 ```
 
-2. Running the code
+2. To run the code, pull repo and run
 
 ```
 go run main.go
@@ -48,16 +42,24 @@ go run main.go
 3. Running the code in debug mode
 
 ```
-GQL_DEUBUG=true run main.go
+GQL_DEUBUG=true go run main.go
 ```
 
-4. Wrapping the code in a docker container
+4. Building the code in a docker container
 
 ```
 DOCKER_BUILDKIT=1 docker build --tag swapiql .
 ```
 
 `DOCKER_BUILDKIT` env var removes the intermediate images after build.
+
+### TODO
+
+- ~~Finish wrapper first parse~~
+- ~~Document the schema~~
+- ~~Add search~~
+- ~~Caching~~
+- Testing and errors
 
 ## Useful Links
 
@@ -69,4 +71,5 @@ DOCKER_BUILDKIT=1 docker build --tag swapiql .
 - [Docker BuildKit](https://docs.docker.com/develop/develop-images/build_enhancements/)
 - [Watchtower](https://containrrr.dev/watchtower/)
 - [Zerolog](https://github.com/rs/zerolog)
+- [go-cache](https://github.com/patrickmn/go-cache)
 

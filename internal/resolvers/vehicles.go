@@ -1,6 +1,7 @@
 package resolvers
 
 import (
+	gocache "github.com/patrickmn/go-cache"
 	"github.com/rs/zerolog/log"
 )
 
@@ -39,23 +40,40 @@ func (v *VehicleResolver) Pilots() (*[]*PersonResolver, error) {
 	return GetPerson(v.PilotURLs)
 }
 
-// GetVehicle requests a vehicle from the REST API
+// GetVehicle requests a vehicle from the REST API or cache
 func GetVehicle(urls []string) (*[]*VehicleResolver, error) {
 
 	var resolvers []*VehicleResolver
 	var err error
 
 	for _, url := range urls {
-		var resolver VehicleResolver
 
-		log.Debug().Str("URL", url).Msg("GetVehicle")
+		// Check the cache
+		val, found := cache.Get(url)
 
-		err := GetURL(url, &resolver)
-		if err != nil {
-			return nil, err
+		if found {
+
+			log.Debug().Str("URL", url).Msg("GetVehicle: Using cache")
+
+			resolver := val.(*VehicleResolver)
+			resolvers = append(resolvers, resolver)
+
+		} else {
+
+			log.Debug().Str("URL", url).Msg("GetVehicle: Using REST API")
+
+			var resolver VehicleResolver
+
+			err := GetURL(url, &resolver)
+			if err != nil {
+				return nil, err
+			}
+
+			cache.Set(url, &resolver, gocache.DefaultExpiration)
+			resolvers = append(resolvers, &resolver)
+
 		}
 
-		resolvers = append(resolvers, &resolver)
 	}
 
 	return &resolvers, err

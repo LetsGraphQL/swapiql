@@ -8,6 +8,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	gocache "github.com/patrickmn/go-cache"
 )
 
 // SearchResponse features the top-level items in a search response. Should be used in conjunction with a resolver.
@@ -17,14 +19,17 @@ type SearchResponse struct {
 	Previous string `json:"previous"`
 }
 
-// Sets a global httpclient for the resolver package
+// gttpclient sets a global httpclient for the resolver package
 var httpclient = &http.Client{Timeout: time.Second * 30}
 
-// Server start time
+// upfrom notes the server start time
 var upfrom = time.Now()
 
 // requestsServed increments after every request
 var requestsServed = int64(0)
+
+// cache creates a cache to speed up the return of data and reduce repeated REST API calls
+var cache = gocache.New(5*time.Minute, 10*time.Minute)
 
 // GetIDFromURL gets the id from the URL of the resource
 func GetIDFromURL(url string) int32 {

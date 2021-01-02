@@ -1,6 +1,7 @@
 package resolvers
 
 import (
+	gocache "github.com/patrickmn/go-cache"
 	"github.com/rs/zerolog/log"
 )
 
@@ -58,23 +59,40 @@ func (s *SpeciesResolver) HairColors() *[]string {
 	return SplitAndTrim(s.HairColorsCSV)
 }
 
-// GetSpecies requests a species from the REST API
+// GetSpecies requests a species from the REST API or cache
 func GetSpecies(urls []string) (*[]*SpeciesResolver, error) {
 
 	var resolvers []*SpeciesResolver
 	var err error
 
 	for _, url := range urls {
-		var resolver SpeciesResolver
 
-		log.Debug().Str("URL", url).Msg("GetSpecies")
+		// Check the cache
+		val, found := cache.Get(url)
 
-		err := GetURL(url, &resolver)
-		if err != nil {
-			return nil, err
+		if found {
+
+			log.Debug().Str("URL", url).Msg("GetSpecies: Using cache")
+
+			resolver := val.(*SpeciesResolver)
+			resolvers = append(resolvers, resolver)
+
+		} else {
+
+			log.Debug().Str("URL", url).Msg("GetSpecies: Using REST API")
+
+			var resolver SpeciesResolver
+
+			err := GetURL(url, &resolver)
+			if err != nil {
+				return nil, err
+			}
+
+			cache.Set(url, &resolver, gocache.DefaultExpiration)
+			resolvers = append(resolvers, &resolver)
+
 		}
 
-		resolvers = append(resolvers, &resolver)
 	}
 
 	return &resolvers, err
