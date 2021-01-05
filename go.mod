@@ -1,4 +1,4 @@
-module github.com/JamesGopsill/swapiql
+module github.com/LetsGraphQL/swapiql
 
 go 1.15
 

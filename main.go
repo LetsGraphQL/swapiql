@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"os"
 
-	//"github.com/JamesGopsill/swapiql/internal/examples"
-	"github.com/JamesGopsill/swapiql/internal/resolvers"
+	//"github.com/LetsGraphQL/swapiql/internal/examples"
+	"github.com/LetsGraphQL/swapiql/internal/resolvers"
 
 	graphql "github.com/graph-gophers/graphql-go"
 	"github.com/graph-gophers/graphql-go/relay"
